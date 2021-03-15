@@ -1,0 +1,8 @@
+export const GET_ERRORS = 'GET_ERRORS'
+export const LOGIN = 'LOGIN'
+export const REGISTER = 'REGISTER'
+export const GET_USERNAME = 'GET_USERNAME'
+export const GET_AUTHORIZATION = 'GET_AUTHORIZATION'
+export const LOGOUT = 'LOGOUT'
+export const IS_LOGGEDIN = 'IS_LOGGEDIN'
+export const GET_CATEGORIES = 'GET_CATEGORIES'
