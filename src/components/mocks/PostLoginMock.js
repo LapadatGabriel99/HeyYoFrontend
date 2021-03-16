@@ -22,6 +22,11 @@ const PostLoginMock = (props) => {
         history.push('/postLoginAdminMock')
     }
 
+    const handleComplaintButtonClick = (history) => {
+
+        history.push('/registerComplaint')
+    }
+
     return (
         <Grid container 
                   direction='column'
@@ -45,6 +50,12 @@ const PostLoginMock = (props) => {
                                  size='large'
                                  style={admBtnStyle}
                                  onClick={() => handleAdminButtonClick(props.history)}/>
+                <Controls.Button variant='contained'
+                                 color='primary'
+                                 text='Complaint'
+                                 size='large'
+                                 style={admBtnStyle}
+                                 onClick={() => handleComplaintButtonClick(props.history)}/>
             </Grid>
     )
 }

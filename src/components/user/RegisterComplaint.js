@@ -1,16 +1,20 @@
-import { Avatar, Grid, makeStyles, Paper } from '@material-ui/core'
+import { Avatar, Grid, makeStyles, MenuItem, Paper } from '@material-ui/core'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useForm from '../../hooks/useForm'
 import { Controls } from '../controls/Controls'
 import Form from '../controls/Form'
 import DraftsOutlinedIcon from '@material-ui/icons/DraftsOutlined';
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { getComplaintCategories } from '../../actions/complaintActions'
+import { registerComplaint } from '../../actions/userActions'
 
 const useStyles = makeStyles(theme => ({
     paper: {
         padding: 20,
-        height: '40vh',
+        height: '45vh',
         width: 400,
         margin: '200px auto'
     },
@@ -18,10 +22,15 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'green'
     },
     submitBtn: {
-        margin: '30px 0px 20px 0px'
+        margin: '25px 0px 20px 0px'
     },
     backBtn: {
         margin: '15px 0px 10px 0px'
+    },
+    select: {
+        margin: '30px 0 10px 0px',
+        width: 360,
+        maxWidth: 360
     }
 }))
 
@@ -61,16 +70,44 @@ const RegisterComplaint = (props) => {
         resetForm,
         onBackButtonClick ] = useForm(initialFormValues, true, validate)
 
-        const handleSubmit = (e) => {
-            e.preventDefault()
-            
-            if (validate()) {
-                alert('Submit')
+    const currentUser = useSelector(state => state.userState.data.username)
 
-                resetForm()
-            }
+    const convertCategories = () => {
 
+        return category.map(c => ({name: c}))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        
+        if (validate()) {
+
+            dispatch(registerComplaint({
+                issuedBy: currentUser,
+                issuedAgainst: values.issuedAt,
+                reason: values.reason,
+                categories: convertCategories()             
+            }, props.history))
+
+            setCategory([])
+
+            resetForm()
         }
+
+    }
+
+    const categories = Array.from(useSelector(state => state.complaintState))
+
+    useEffect(() => {
+        dispatch(getComplaintCategories(props.history))
+    }, [dispatch])
+
+    // TODO: Refactor code block
+    const [category, setCategory] = useState([]);
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -99,6 +136,17 @@ const RegisterComplaint = (props) => {
                                     onChange={handleInputChange}
                                     error={errors.reason}
                                     fullWidth/>
+                    <Controls.Select label='Category'
+                                     value={category}
+                                     onChange={handleCategoryChange}
+                                     multiple
+                                     className={classes.select}>
+                        {categories.map((c) => (
+                        <MenuItem key={c.id} value={c.name}>
+                            {c.name}
+                        </MenuItem>
+                        ))}
+                    </Controls.Select>
                     <Controls.Button type='submit' 
                                      color='primary' 
                                      variant='contained' 

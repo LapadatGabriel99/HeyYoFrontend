@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_CATEGORIES } from './types'
+import { GET_CATEGORIES, GET_ERRORS } from './types'
 
 export const getComplaintCategories = (history) => async dispatch => {
 
@@ -14,7 +14,7 @@ export const getComplaintCategories = (history) => async dispatch => {
 
         dispatch({
             type: GET_CATEGORIES,
-            payload: categories
+            payload: categories.data
         })
     }
     catch (error) {
