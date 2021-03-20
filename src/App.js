@@ -13,12 +13,14 @@ import RegisterComplaint from './components/user/RegisterComplaint';
 import { useSelector } from 'react-redux'
 import AdminRoute from './components/routes/AdminRoute';
 import PostLoginAdminMock from './components/mocks/PostLoginAdminMock';
+import UserHub from './components/user/UserHub';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       main: '#333996',
-      light: '#3c44b126'
+      light: '#3c44b126',
+      dark: '#232769'
     },
     secondary: {
       main: '#f83245',
@@ -69,6 +71,7 @@ function App() {
                       role={authorizationState.role} 
                       isLoggedIn={isLoggedIn}
                       component={PostLoginAdminMock}/>
+          <Route exact path='/userHub' component={UserHub}/>
         </div>
         <CssBaseline/>
       </MuiThemeProvider>

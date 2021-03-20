@@ -29,7 +29,7 @@ export const login = (userCredentials, history) => async dispatch => {
             }
         })
 
-        history.push('/postLoginMock')
+        history.push('/userHub')
     }
     catch (error) {
 
