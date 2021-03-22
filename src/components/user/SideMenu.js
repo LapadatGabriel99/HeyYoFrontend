@@ -9,7 +9,8 @@ const useStyles = makeStyles(theme => ({
         left: '0px',
         height: '100%',
         width: '250px',
-        backgroundColor: theme.palette.primary.dark
+        backgroundColor: theme.palette.primary.dark,
+        paddingTop: 100
     },
     sideBtn: {
         opacity: '0.9',
@@ -25,15 +26,30 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const SideMenu = (props) => {
+const SideMenu = (fullProps) => {
     const classes = useStyles()
+
+    const {url, props} = fullProps
+
+    const onButtonClick = (link, history) => {
+
+        history.push(link)
+    }
 
     return (
         <div className={classes.sideMenu}>
             <Button className={classes.sideBtn}
                     color='primary'
                     variant='text'
-                    size='large'>
+                    size='large'
+                    onClick={() => onButtonClick(url, props.history)}>
+                Home
+            </Button>
+            <Button className={classes.sideBtn}
+                    color='primary'
+                    variant='text'
+                    size='large'
+                    onClick={() => onButtonClick(`${url}/public`, props.history)}>
                 Public Chat
             </Button>
             <Button className={classes.sideBtn}
@@ -47,6 +63,12 @@ const SideMenu = (props) => {
                     variant='text'
                     size='large'>
                 Report User
+            </Button>
+            <Button className={classes.sideBtn}
+                    color='primary'
+                    variant='text'
+                    size='large'>
+                Create Chat
             </Button>
         </div>
     )

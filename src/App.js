@@ -71,7 +71,7 @@ function App() {
                       role={authorizationState.role} 
                       isLoggedIn={isLoggedIn}
                       component={PostLoginAdminMock}/>
-          <Route exact path='/userHub' component={UserHub}/>
+          <Route path='/userHub' component={UserHub}/>
         </div>
         <CssBaseline/>
       </MuiThemeProvider>

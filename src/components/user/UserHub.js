@@ -1,5 +1,6 @@
 import { makeStyles, Paper } from '@material-ui/core'
 import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router'
 import Chat from '../chat/Chat'
 import Connect from '../chat/Connect'
 import HomePage from './HomePage'
@@ -10,34 +11,30 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: '250px',
         width: '100%'
     },
-    homePageContent: {
-        margin: theme.spacing(5),
-        padding: theme.spacing(3),
-        height: '85vh'
-    },
-    publicChatPageContent: {
-        margin: '100px auto',
-        paddingTop: 100,
-        paddingLeft: 160,
-        width: 570,
-        height: 360 
-    },
 }))
 
 const UserHub = (props) => {
     const classes = useStyles()
 
+    const { url, path} = useRouteMatch()
+
+    const fullProps = {url, props}
+
     return (
         <React.Fragment>
-            <SideMenu {...props}/>
+            <SideMenu {...fullProps}/>
             <div className={classes.hubMain}>
-                {/*<Paper className={classes.homePageContent}>
-                    <HomePage/>
-                </Paper>*/}
-                {/*<Paper className={classes.publicChatPageContent}>
-                    <Connect chatName='Public Chat'/>
-                </Paper>*/}
-                <Chat/>
+                <Switch>
+                    <Route exact path={path}>
+                        <HomePage/>
+                    </Route>
+                    <Route exact path={`${path}/public`}>
+                        <Connect chatName='Public Chat' url={url}/>
+                    </Route>
+                    <Route exact path={`${path}/public/chat`}>
+                        <Chat/>
+                    </Route>
+                </Switch>
             </div>
         </React.Fragment>
     )
