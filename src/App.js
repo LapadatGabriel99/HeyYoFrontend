@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './components/authentication/Login';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Register from './components/authentication/Register';
 import { createMuiTheme, CssBaseline, makeStyles, MuiThemeProvider } from '@material-ui/core';
 import NavBar from './components/header/NavBar';
@@ -59,19 +59,21 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <div className={classes.appMain}>
           <NavBar/>
-          <Route exact path='/' component={Login}/>
-          <Route exact path='/register' component={Register}/>
-          <Route exact path='/resetPassword' component={ResetPassword}/>
-          <Route exact path='/passwordRecovery' component={PasswordRecovery}/>
-          <Route exact path='/tokenConfirmation' component={TokenConfirmation}/>
-          <Route exact path='/errorPage' component={ErrorPage}/>
-          <Route exact path='/postLoginMock' component={PostLoginMock}/>
-          <Route exact path='/registerComplaint' component={RegisterComplaint}/>
-          <AdminRoute exact path='/postLoginAdminMock' 
-                      role={authorizationState.role} 
-                      isLoggedIn={isLoggedIn}
-                      component={PostLoginAdminMock}/>
-          <Route path='/userHub' component={UserHub}/>
+          <Switch>
+            <Route exact path='/' component={Login}/>
+            <Route exact path='/register' component={Register}/>
+            <Route exact path='/resetPassword' component={ResetPassword}/>
+            <Route exact path='/passwordRecovery' component={PasswordRecovery}/>
+            <Route exact path='/tokenConfirmation' component={TokenConfirmation}/>
+            <Route exact path='/errorPage' component={ErrorPage}/>
+            <Route exact path='/postLoginMock' component={PostLoginMock}/>
+            <Route exact path='/registerComplaint' component={RegisterComplaint}/>
+            <AdminRoute exact path='/postLoginAdminMock' 
+                        role={authorizationState.role} 
+                        isLoggedIn={isLoggedIn}
+                        component={PostLoginAdminMock}/>
+            <Route path='/userHub' component={UserHub}/>
+          </Switch>
         </div>
         <CssBaseline/>
       </MuiThemeProvider>

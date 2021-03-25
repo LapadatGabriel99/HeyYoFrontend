@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         width: '250px',
         backgroundColor: theme.palette.primary.dark,
-        paddingTop: 100
+        paddingTop: 90
     },
     sideBtn: {
         opacity: '0.9',

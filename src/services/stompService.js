@@ -15,9 +15,9 @@ export const connect = (username, onMessageReceived) => {
 
 const onConnected = (username, onMessageReceived) => {
 
-    stompClient.subscribe('topic/public', onMessageReceived)
+    stompClient.subscribe('/topic/public', onMessageReceived)
 
-    stompClient.send('app/chat.join', 
+    stompClient.send('/app/chat.join', 
                     {},
                     JSON.stringify({sender: username, type: 'CONNECT', time: Date.now().toString()}))
 }
@@ -38,6 +38,6 @@ export const send = (sender, messageContent) => {
             time: Date.now().toString()
         }
 
-        stompClient.send('/app/chat.send', {}, JSON.stringify(chatMessage))
+        stompClient.send('/app/chat.send', {}, JSON.stringify(message))
     }
 }

@@ -76,7 +76,16 @@ export const logout = (history) => async dispatch => {
         dispatch({
             type: LOGOUT,
             payload: {
-
+                data: {
+                    id: '',
+                    firstname: '',
+                    lastname: '',
+                    username: '',
+                    email: '',
+                    registrationDate: '',
+                    enabled: '',
+                    roles: ['']
+                }
             }
         })
 

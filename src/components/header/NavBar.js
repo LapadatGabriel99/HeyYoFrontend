@@ -82,7 +82,7 @@ const NavBar = (props) => {
                             ?
                             <React.Fragment>
                                 <IconButton 
-                                            size='large'
+                                            
                                             className={classes.account}
                                             aria-controls="fade-menu" 
                                             aria-haspopup="true" 
