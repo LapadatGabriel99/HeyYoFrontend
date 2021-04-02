@@ -35,7 +35,7 @@ export const login = (userCredentials, history) => async dispatch => {
 
         dispatch({
             type: GET_ERRORS,
-            payload: error.response.data
+            payload: error//error.hasOwnProperty('response') ? error.response.data : error
         })
 
         history.push('/ErrorPage')

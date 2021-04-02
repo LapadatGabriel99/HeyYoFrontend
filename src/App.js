@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root'
 import React from 'react';
 import Login from './components/authentication/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -81,4 +82,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);

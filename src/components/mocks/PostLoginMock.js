@@ -1,14 +1,28 @@
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, makeStyles, Typography } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Controls } from '../controls/Controls'
 import { logout } from '../../actions/userActions'
 
+const useStyles = makeStyles(theme => ({
+    simpleText: {
+        fontSize: 20,
+        marginTop: 10,
+        marginBottom: 10
+    },
+    newText: {
+        fontSize: 50,
+        fontFamily: "'Quicksand', sans-serif"
+    }
+}))
+
 const PostLoginMock = (props) => {
     const alertStyle = {margin: '150px auto'}
     const buttonStyle = {width: 100, margin: '-30px 0px 0px 0px'}
     const admBtnStyle = {width: 100, margin: '30px 0px 0px 0px'}
+
+    const classes = useStyles()
 
     const dispatch = useDispatch()
 
@@ -56,6 +70,13 @@ const PostLoginMock = (props) => {
                                  size='large'
                                  style={admBtnStyle}
                                  onClick={() => handleComplaintButtonClick(props.history)}/>
+
+                <Typography className={classes.simpleText}>
+                    Hello There
+                </Typography>
+                <Typography className={classes.newText}>
+                    Hello There
+                </Typography>
             </Grid>
     )
 }

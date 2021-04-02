@@ -3,23 +3,29 @@ import * as Stomp  from 'stompjs'
 
 let stompClient = null;
 
-export const connect = (username, onMessageReceived) => {
+export const connect = (username, roomId, onMessageReceived) => {
 
     const socket = new SockJS('http://localhost:8080/heyyo')
     stompClient = Stomp.over(socket)
 
     stompClient.connect({ headers: {'Content-Type': 'text/plain', }}, 
-                        () => onConnected(username, onMessageReceived),     
+                        () => onConnected(username, roomId, onMessageReceived),     
                         () => onError())
 }
 
-const onConnected = (username, onMessageReceived) => {
+const onConnected = (username, roomId, onMessageReceived) => {
 
     stompClient.subscribe('/topic/public', onMessageReceived)
 
     stompClient.send('/app/chat.join', 
                     {},
-                    JSON.stringify({sender: username, type: 'CONNECT', time: Date.now().toString()}))
+                    JSON.stringify({
+                        sender: username, 
+                        content: username + " joined",
+                        type: 'CONNECT', 
+                        time: Date.now(),
+                        roomId: roomId
+                    }))
 }
 
 const onError = () => {
@@ -27,7 +33,7 @@ const onError = () => {
 
 }
 
-export const send = (sender, messageContent) => {
+export const send = (sender, roomId, messageContent) => {
 
     if (messageContent && stompClient) {
 
@@ -35,7 +41,8 @@ export const send = (sender, messageContent) => {
             sender: sender,
             content: messageContent,
             type: 'CHAT',
-            time: Date.now().toString()
+            time: Date.now(),
+            roomId: roomId
         }
 
         stompClient.send('/app/chat.send', {}, JSON.stringify(message))

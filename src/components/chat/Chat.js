@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 import Fab from '@material-ui/core/Fab'
@@ -15,7 +13,6 @@ import SendIcon from '@material-ui/icons/Send'
 import { ListItemAvatar } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { connect, send } from '../../services/stompService'
-import Form from '../controls/Form'
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -44,13 +41,34 @@ const useStyles = makeStyles(theme => ({
     },
     rightMessageArea: {
         marginRight: 0,
+    },
+    currentUserMessage: {
+        color: theme.palette.primary.light,
+        font: ['Quicksand', 'sans-serif'].join(','),
+        fontWeight: 500
     }
 }))
 
 const Chat = (props) => {
     const classes = useStyles();
 
+    const userMessageStyle = { 
+        color: '#3c44b126', 
+        fontFamily: ['Quicksand', 'sans-serif'].join(','),
+        fontSize: 20,
+        fontWeight: 700
+    }
+    
+    const defaultMessageStyle = {
+        fontSize: 18,
+        fontWeight: 600
+    }
+
     const user = useSelector(state => state.userState.data.username)
+
+    const chatRoomMessages = useSelector(state => state.chatRoomState.listOfMessages)
+
+    const roomId = useSelector(state => state.chatRoomState.id)
 
     const [members, setMembers] = useState([])
 
@@ -63,17 +81,22 @@ const Chat = (props) => {
         time: ''
     }])
 
-    const [payload, setPayload] = useState({
-        type: '',
-        content: '',
-        sender: '',
-        time: ''
-    })
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         console.log("Component did mount")
         
-        connect(user, onMessageReceived)
+        connect(user, roomId, onMessageReceived)
+
+        if (chatRoomMessages) {
+
+            setMessageList(messageList => [...messageList, chatRoomMessages])
+        }
+
+        if (scrollRef.current) {
+            
+            scrollRef.current.scrollIntoView({ behaviour: "smooth" });
+        }
     }, [])
 
     useEffect(() => {
@@ -92,7 +115,7 @@ const Chat = (props) => {
 
         event.preventDefault()
 
-        send(user, message)
+        send(user, roomId, message)
 
         setMessage('')
     }
@@ -100,8 +123,6 @@ const Chat = (props) => {
     const onMessageReceived = (payload) => {
 
         const receivedMessage = JSON.parse(payload.body)
-
-        setPayload(receivedMessage)
 
         if (receivedMessage.type === 'CONNECT') {
 
@@ -165,7 +186,7 @@ const Chat = (props) => {
                                                     src="https://material-ui.com/static/images/avatar/1.jpg" />
                                         </ListItemAvatar>
                                         <ListItemText align='center' 
-                                                        primary={value.content}>
+                                                        primary={`${value.sender} joined`}>
                                         </ListItemText>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -187,7 +208,7 @@ const Chat = (props) => {
                                                     src="https://material-ui.com/static/images/avatar/1.jpg"/>
                                         </ListItemAvatar>
                                         <ListItemText align='center'
-                                                        primary={value.content}>
+                                                        primary={`${value.sender} left`}>
                                         </ListItemText>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -210,8 +231,11 @@ const Chat = (props) => {
                                                 <Avatar alt={value.sender}
                                                     src="https://material-ui.com/static/images/avatar/1.jpg"/>
                                             </ListItemAvatar>
-                                            <ListItemText align='right'
-                                                            primary={value.content}>
+                                            <ListItemText   align='right'
+                                                            primary={value.content}
+                                                            primaryTypographyProps={{
+                                                                style: userMessageStyle
+                                                            }}>
                                             </ListItemText>
                                         </Grid>
                                         <Grid item xs={12}>
@@ -231,8 +255,11 @@ const Chat = (props) => {
                                                 <Avatar alt={value.sender}
                                                     src="https://material-ui.com/static/images/avatar/1.jpg"/>
                                             </ListItemAvatar>
-                                            <ListItemText align='left'
-                                                            primary={value.content}>
+                                            <ListItemText   align='left'
+                                                            primary={value.content}
+                                                            primaryTypographyProps={{
+                                                                style: defaultMessageStyle
+                                                            }}>
                                             </ListItemText>
                                         </Grid>
                                         <Grid item xs={12}>
@@ -273,6 +300,7 @@ const Chat = (props) => {
             <Grid item xs={9}>
                 <List className={classes.messageArea}>
                     {chatMessageList()}
+                    <ListItem ref={scrollRef}/>
                 </List>
                 <Divider />
                 <Grid container style={{padding: '20px'}}>

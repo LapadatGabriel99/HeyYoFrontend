@@ -1,6 +1,8 @@
 import { Button, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
 import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { getChatRoom } from '../../actions/chatRoomActions'
 
 const useStyles = makeStyles(theme => ({
     joinBtn: {
@@ -26,9 +28,11 @@ const Connect = (props) => {
 
     const history = useHistory()
 
+    const dispatch = useDispatch()
+
     const onJoinButtonClick = (link, history) => {
 
-        history.push(link)
+        dispatch(getChatRoom('public', link, history))
     }
 
     return (
