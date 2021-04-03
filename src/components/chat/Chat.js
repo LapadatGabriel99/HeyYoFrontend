@@ -90,7 +90,7 @@ const Chat = (props) => {
 
         if (chatRoomMessages) {
 
-            setMessageList(messageList => [...messageList, chatRoomMessages])
+            setMessageList(chatRoomMessages)
         }
 
         if (scrollRef.current) {

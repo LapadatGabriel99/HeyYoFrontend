@@ -8,6 +8,7 @@ export const login = (userCredentials, history) => async dispatch => {
         const user = await axios.post(
             'http://localhost:8080/api/v1.0/user/login', 
             userCredentials,{
+
                 withCredentials: true
             })
 
@@ -35,7 +36,7 @@ export const login = (userCredentials, history) => async dispatch => {
 
         dispatch({
             type: GET_ERRORS,
-            payload: error//error.hasOwnProperty('response') ? error.response.data : error
+            payload: error.hasOwnProperty('response') ? error.response.data : error
         })
 
         history.push('/ErrorPage')

@@ -1,4 +1,4 @@
-import { hot } from 'react-hot-loader/root'
+import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import Login from './components/authentication/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux'
 import AdminRoute from './components/routes/AdminRoute';
 import PostLoginAdminMock from './components/mocks/PostLoginAdminMock';
 import UserHub from './components/user/UserHub';
+import { RemoveScrollBar } from 'react-remove-scroll-bar';
 
 const theme = createMuiTheme({
   palette: {
@@ -45,7 +46,10 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
   appMain:{
-    width: '100%'
+    width: '100%',
+    '-webkit-scrollbar': {
+      display: 'none'
+    }
   }
 })
 
