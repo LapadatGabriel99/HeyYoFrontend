@@ -80,11 +80,6 @@ const NavBar = (props) => {
 
     const [hover, setHover] = useState(false)
 
-    const toggleHover = () => {
-
-        setHover(prev => !prev)
-    }
-
     let isLoggedIn = useSelector(state => state.loginState)
 
     const [anchorElement, setAnchorElement] = useState(null)

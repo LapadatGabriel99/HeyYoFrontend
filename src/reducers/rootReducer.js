@@ -7,6 +7,7 @@ import authorizationReducer from './authorizationReducer';
 import loggedInReducer from './loggedInReducer';
 import complaintReducer from './complaintReducer';
 import chatRoomReducer from './chatRoomReducer';
+import { CLEAR_ALL_DATA } from '../actions/types';
 
 const persistConfig = {
     key: 'root',
@@ -18,7 +19,7 @@ const persistConfig = {
                 'complaintState']
 }
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     errorState: errorReducer,
     userState: userReducer,
     authorizationState: authorizationReducer,
@@ -26,5 +27,47 @@ const rootReducer = combineReducers({
     complaintState: complaintReducer,
     chatRoomState: chatRoomReducer
 })
+
+const emptyState = {
+    errorState: {},
+    userState: {
+        data: {
+            id: '',
+            firstname: '',
+            lastname: '',
+            username: '',
+            email: '',
+            registrationDate: '',
+            enabled: '',
+            roles: ['']
+        }
+    },
+    authorizationState: {
+        authorized: false,
+        role: ''
+    },
+    loginState: false,
+    complaintState: {},
+    chatRoomState: {
+        id: '',
+        roomName: '',
+        roomNickname: '',
+        roomOwner: '',
+        createdAt: '',
+        listOfMessages: [],
+        listOfMembers: []
+    }
+}
+
+const rootReducer = (state, action) => {
+    if(action.type === CLEAR_ALL_DATA) {
+
+        storage.removeItem('persist:root')
+
+        state = emptyState
+    }
+
+    return appReducer(state, action)
+}
 
 export default persistReducer(persistConfig, rootReducer)

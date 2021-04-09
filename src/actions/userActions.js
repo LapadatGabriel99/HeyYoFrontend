@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { LOGIN, REGISTER, GET_ERRORS, GET_USERNAME, GET_AUTHORIZATION, LOGOUT, IS_LOGGEDIN } from '../actions/types'
+import { LOGIN, REGISTER, GET_ERRORS, GET_USERNAME, GET_AUTHORIZATION, LOGOUT, IS_LOGGEDIN, CLEAR_ALL_DATA } from '../actions/types'
 
 export const login = (userCredentials, history) => async dispatch => {
 
@@ -75,24 +75,8 @@ export const logout = (history) => async dispatch => {
         })
 
         dispatch({
-            type: LOGOUT,
-            payload: {
-                data: {
-                    id: '',
-                    firstname: '',
-                    lastname: '',
-                    username: '',
-                    email: '',
-                    registrationDate: '',
-                    enabled: '',
-                    roles: ['']
-                }
-            }
-        })
-
-        dispatch({
-            type: IS_LOGGEDIN,
-            payload: false
+            type: CLEAR_ALL_DATA,
+            payload: null
         })
 
         history.push('/')

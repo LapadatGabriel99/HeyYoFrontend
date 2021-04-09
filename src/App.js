@@ -16,6 +16,7 @@ import AdminRoute from './components/routes/AdminRoute';
 import PostLoginAdminMock from './components/mocks/PostLoginAdminMock';
 import UserHub from './components/user/UserHub';
 import { RemoveScrollBar } from 'react-remove-scroll-bar';
+import LoginRoute from './components/routes/LoginRoute';
 
 const theme = createMuiTheme({
   palette: {
@@ -65,7 +66,7 @@ function App() {
         <div className={classes.appMain}>
           <NavBar/>
           <Switch>
-            <Route exact path='/' component={Login}/>
+            <LoginRoute exact path='/' component={Login} isLoggedIn={isLoggedIn}/>
             <Route exact path='/register' component={Register}/>
             <Route exact path='/resetPassword' component={ResetPassword}/>
             <Route exact path='/passwordRecovery' component={PasswordRecovery}/>
